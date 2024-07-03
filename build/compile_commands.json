@@ -1,0 +1,13 @@
+[
+{
+  "directory": "/data/ros/cdu_cimpl/build",
+  "command": "/usr/bin/c++   -I../include  -g   -std=gnu++11 -o CMakeFiles/cdu_cimpl.dir/src/transform.cpp.o -c /data/ros/cdu_cimpl/src/transform.cpp",
+  "file": "/data/ros/cdu_cimpl/src/transform.cpp"
+},
+
+{
+  "directory": "/data/ros/cdu_cimpl/build",
+  "command": "/usr/bin/c++   -I../include  -g   -std=gnu++11 -o CMakeFiles/cdu_cimpl.dir/src/main.cpp.o -c /data/ros/cdu_cimpl/src/main.cpp",
+  "file": "/data/ros/cdu_cimpl/src/main.cpp"
+}
+]

@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/transform.h
+
+/data/ros/cdu_cimpl/src/main.cpp
+transform.h
+/data/ros/cdu_cimpl/src/transform.h
+iostream
+-
+
+/data/ros/cdu_cimpl/src/transform.cpp
+transform.h
+/data/ros/cdu_cimpl/src/transform.h
+iostream
+-
+
