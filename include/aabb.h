@@ -6,10 +6,42 @@
 #include <Eigen/Geometry>
 
 template <typename S>
-struct AABB
+using Vector3 = Eigen::Matrix<S, 3, 1>;
+
+template <typename S_>
+class AABB
 {
-    Eigen::Matrix<S, 3, 1> min_;
-    Eigen::Matrix<S, 3, 1> max_;
+public:
+    using S = S_;
+
+    Vector3<S> min_;
+    Vector3<S> max_;
+
+    AABB();
+    // AABB(const Vector3<S>& v);
+    AABB(const Vector3<S>& a, const Vector3<S>&b);
+
+    /// @brief Check whether two AABB are overlap
+    bool overlap(const AABB<S>& other) const;
+
+    /// @brief Merge the AABB and another AABB
+    AABB<S>& operator += (const AABB<S>& other);
+
+    /// @brief Return the merged AABB of current AABB and the other one
+    AABB<S> operator + (const AABB<S>& other) const;
+
+    /// @brief Width of the AABB
+    S width() const;
+
+    /// @brief Height of the AABB
+    S height() const;
+
+    /// @brief Depth of the AABB
+    S depth() const;
+
+    /// @brief Center of the AABB
+    Vector3<S> center() const;
+        
 };
 
 #endif

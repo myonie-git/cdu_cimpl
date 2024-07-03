@@ -8,8 +8,6 @@
 
 #include "aabb.h"
 
-template <typename S>
-using Vector3 = Eigen::Matrix<S, 3, 1>;
 
 // CollisionObject 类定义
 template <typename S>
