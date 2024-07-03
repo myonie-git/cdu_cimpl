@@ -10,14 +10,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # 包含目录
 include_directories(include)
 
+# 查找Eigen3库
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+
+# 包含Eigen头文件目录
+include_directories(${EIGEN3_INCLUDE_DIR})
+
 # 源文件
 set(SOURCES
-    src/transform.cpp
+    src/collision_env.cpp
+    src/collision_object.cpp
     src/main.cpp
 )
 
 # 生成可执行文件
 add_executable(cdu_cimpl ${SOURCES})
 
-# 如果需要添加库链接，取消以下注释并调整库名称
-# target_link_libraries(cdu_cimpl <library_name>)
+# 链接Eigen库
+target_link_libraries(cdu_cimpl Eigen3::Eigen)

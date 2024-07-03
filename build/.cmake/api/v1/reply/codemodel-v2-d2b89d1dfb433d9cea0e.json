@@ -18,7 +18,7 @@
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "",
 			"projects" : 
 			[
 				{
@@ -38,7 +38,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "cdu_cimpl::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-cdu_cimpl-Debug-9fd8606f0b3a5a61b4b1.json",
+					"jsonFile" : "target-cdu_cimpl-3445063355a55bf88245.json",
 					"name" : "cdu_cimpl",
 					"projectIndex" : 0
 				}

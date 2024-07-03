@@ -1,13 +1,11 @@
 // src/main.cpp
 
-#include "transform.h"
+#include "collision_object.h"
+#include "aabb.h"
+#include "collision_env.h"
 #include <iostream>
 
 int main() {
-
-
-    
     std::cout << "Calling transform function" << std::endl;
-    transformFunction(); // 调用 transform.h 中的函数
     return 0;
 }
