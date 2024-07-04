@@ -17,7 +17,6 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 # 源文件
-# 源文件
 set(SOURCES
     src/aabb.cpp
     src/bvh_node_base.cpp
@@ -27,8 +26,18 @@ set(SOURCES
     src/main.cpp
 )
 
-# 生成可执行文件
+# 生成主程序可执行文件
 add_executable(cdu_cimpl ${SOURCES})
 
 # 链接Eigen库
 target_link_libraries(cdu_cimpl Eigen3::Eigen)
+
+# 测试文件源文件
+set(TEST_SOURCES
+    test/test_build_env.cpp
+    src/aabb.cpp
+)
+
+# 添加测试可执行文件
+add_executable(test_build_env ${TEST_SOURCES})
+target_link_libraries(test_build_env Eigen3::Eigen)
