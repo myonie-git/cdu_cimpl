@@ -17,7 +17,11 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 # 源文件
+# 源文件
 set(SOURCES
+    src/aabb.cpp
+    src/bvh_node_base.cpp
+    src/bvh_tree.cpp
     src/collision_env.cpp
     src/collision_object.cpp
     src/main.cpp

@@ -11,12 +11,15 @@
 template <typename BV>
 class BvhTree{
 public:
+
+    using S = typename BV::S;
+
     typedef NodeBase<AABB<double>> NodeType;
     BvhTree();
     ~BvhTree();
     void init(std::vector<NodeType*>& leaves); //初始化bvh树
     NodeType* getRoot() const;
-    NodeType&* getRoot();
+    NodeType*& getRoot();
     void clear();
 
     int bu_threshold;
@@ -32,7 +35,6 @@ private:
     NodeType* topdown(const NodeVecIterator lbeg, const NodeVecIterator lend);
 
     
-
 };
 
 

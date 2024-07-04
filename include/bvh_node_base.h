@@ -15,7 +15,7 @@ public:
     };
 
     bool isLeaf() const;
-    bool inInternal() const;
+    bool isInternal() const;
 
     NodeBase();
     NodeBase(const BV& bv_);

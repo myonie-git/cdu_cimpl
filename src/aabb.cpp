@@ -37,7 +37,7 @@ AABB<S>& AABB<S>::operator +=(const AABB<S>& other)
 }
 
 template <typename S>
-AABB<S>& AABB<S>::operator +(const AABB<S>& other)
+AABB<S> AABB<S>::operator +(const AABB<S>& other) const
 {
     AABB res(*this);
     return res += other;
