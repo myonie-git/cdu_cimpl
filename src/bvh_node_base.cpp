@@ -16,7 +16,6 @@ NodeBase<BV>::NodeBase() : parent(nullptr) {
     data = nullptr;
 }
 
-
 template <typename BV>
 bool NodeBase<BV>::isLeaf() const
 {
