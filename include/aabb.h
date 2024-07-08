@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include <Eigen/Geometry>
+#include <limits>
+
+// #include "collision_object.h"
 
 template <typename S>
 using Vector3 = Eigen::Matrix<S, 3, 1>;
@@ -17,9 +20,17 @@ public:
     Vector3<S> min_;
     Vector3<S> max_;
 
-    AABB();
+    AABB()
+        : min_(Vector3<S>::Constant(std::numeric_limits<S>::max())),
+          max_(Vector3<S>::Constant(-std::numeric_limits<S>::max()))
+    {
+    }
+
     // AABB(const Vector3<S>& v);
-    AABB(const Vector3<S>& a, const Vector3<S>&b);
+    AABB(const Vector3<S>& a, const Vector3<S>& b)
+        : min_(a.cwiseMin(b)), max_(a.cwiseMax(b))
+    {
+    }
 
     /// @brief Check whether two AABB are overlap
     bool overlap(const AABB<S>& other) const;

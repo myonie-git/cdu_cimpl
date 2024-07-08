@@ -16,6 +16,9 @@ find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 # 包含Eigen头文件目录
 include_directories(${EIGEN3_INCLUDE_DIR})
 
+# 设置调试信息
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+
 # 源文件
 set(SOURCES
     src/aabb.cpp
@@ -36,6 +39,10 @@ target_link_libraries(cdu_cimpl Eigen3::Eigen)
 set(TEST_SOURCES
     test/test_build_env.cpp
     src/aabb.cpp
+    src/bvh_node_base.cpp
+    src/bvh_tree.cpp
+    src/collision_env.cpp
+    src/collision_object.cpp
 )
 
 # 添加测试可执行文件

@@ -1,20 +1,20 @@
 #include "aabb.h"
 
-template <typename S>
-AABB<S>::AABB() 
-    : min_(Vector3<S>::Constant(std::numeric_limits<S>::max())),
-    max_(Vector3<S>::Constant(-std::numeric_limits<S>::max()))
-{
+// template <typename S>
+// AABB<S>::AABB() 
+//     : min_(Vector3<S>::Constant(std::numeric_limits<S>::max())),
+//     max_(Vector3<S>::Constant(-std::numeric_limits<S>::max()))
+// {
 
-}
+// }
 
-template <typename S>
-AABB<S>::AABB(const Vector3<S>& a, const Vector3<S>& b)
-  : min_(a.cwiseMin(b)),
-    max_(a.cwiseMax(b))
-{
-  // Do nothing
-}
+// template <typename S>
+// AABB<S>::AABB(const Vector3<S>& a, const Vector3<S>& b)
+//   : min_(a.cwiseMin(b)),
+//     max_(a.cwiseMax(b))
+// {
+//   // Do nothing
+// }
 
 template <typename S>
 bool AABB<S>::overlap(const AABB<S>& other) const
@@ -71,3 +71,8 @@ Vector3<S> AABB<S>::center() const
 {
   return (min_ + max_) * 0.5;
 }
+
+
+// 显式实例化模板类 以防万一可以加一个实例化类
+// template class AABB<double>;
+// template class AABB<float>;
