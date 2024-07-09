@@ -15,7 +15,6 @@ int main(){
 
     CollisionEnv<S> env;
     env.InitTree(collision_objects);
-
-
+    env.dtree.print();
     return 0;
 }

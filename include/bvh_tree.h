@@ -23,6 +23,10 @@ public:
     NodeType* createNode(NodeType* parent, const BV& bv, void* data);
     void clear();
     size_t size() const;
+    void print(NodeType* root, int depth);
+    void print(){
+        print(root_node, 0);
+    }
 
     int bu_threshold;
     size_t n_leaves;

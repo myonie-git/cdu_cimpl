@@ -63,12 +63,14 @@ std::vector<CollisionObject<S>*> readBoxesFromFile(const std::string& filename) 
         if (line.find("Size:") != std::string::npos) {
             Vector3<S> size;
             std::stringstream ss(line.substr(line.find(":") + 1));
-            ss >> size[0] >> size[1] >> size[2];
+            char ignore;
+            ss >> ignore >> size[0] >> ignore >> size[1] >> ignore >> size[2] >> ignore;
             sizes.push_back(size);
         } else if (line.find("Position:") != std::string::npos) {
             Vector3<S> position;
             std::stringstream ss(line.substr(line.find(":") + 1));
-            ss >> position[0] >> position[1] >> position[2];
+            char ignore;
+            ss >> ignore >> position[0] >> ignore >> position[1] >> ignore >> position[2] >> ignore;
             positions.push_back(position);
         }
     }
