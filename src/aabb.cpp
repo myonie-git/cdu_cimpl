@@ -74,5 +74,5 @@ Vector3<S> AABB<S>::center() const
 
 
 // 显式实例化模板类 以防万一可以加一个实例化类
-// template class AABB<double>;
+template class AABB<double>;
 // template class AABB<float>;

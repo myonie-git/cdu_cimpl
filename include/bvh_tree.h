@@ -20,7 +20,9 @@ public:
     void init(std::vector<NodeType*>& leaves); //初始化bvh树
     NodeType* getRoot() const;
     NodeType*& getRoot();
+    NodeType* createNode(NodeType* parent, const BV& bv, void* data);
     void clear();
+    size_t size() const;
 
     int bu_threshold;
     size_t n_leaves;

@@ -22,6 +22,11 @@ void BvhTree<BV>::clear(){
 }
 
 template<typename BV>
+size_t BvhTree<BV>::size() const{
+    return n_leaves;
+}
+
+template<typename BV>
 void BvhTree<BV>::recurseDeleteNode(NodeType* node){
     if(!node->isLeaf()){
         recurseDeleteNode(node->children[0]);
@@ -96,3 +101,15 @@ typename BvhTree<BV>::NodeType* BvhTree<BV>::topdown(const NodeVecIterator lbeg,
     }
     return *lbeg;
 }
+
+template<typename BV>
+typename BvhTree<BV>::NodeType* BvhTree<BV>::createNode(NodeType* parent, const BV& bv, void* data){
+    NodeType* node = new NodeType(); // 分配内存并初始化 node
+    node->parent = parent;
+    node->data = data;
+    node->children[1] = 0;
+    node->bv = bv;
+    return node;
+}
+
+template class BvhTree<AABB<double>>;

@@ -18,6 +18,7 @@ public:
 
     CollisionEnv();
 
+
     // void InitTree(std::vector<NodeType*>& leaves); //输入一系列的碰撞物,以建树
     void InitTree(const std::vector<CollisionObject<S>*>& other_objs);
     void clear();

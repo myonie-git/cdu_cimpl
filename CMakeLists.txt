@@ -29,6 +29,10 @@ set(SOURCES
     src/main.cpp
 )
 
+set(CMAKE_C_COMPILER_LAUNCHER ccache)
+set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+
+
 # 生成主程序可执行文件
 add_executable(cdu_cimpl ${SOURCES})
 

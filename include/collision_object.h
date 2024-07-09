@@ -29,6 +29,10 @@ public:
     {
     }
 
+    AABB<S> getAABB() const{
+        return aabb;
+    }
+
     void computeAABB();
 
     //the position of the center of aabb

@@ -1,4 +1,5 @@
 #include "bvh_node_base.h"
+#include "aabb.h"
 
 // 构造函数定义
 template<typename BV>
@@ -27,3 +28,5 @@ bool NodeBase<BV>::isInternal() const
 {
   return !isLeaf();
 }
+
+template class NodeBase<AABB<double>>;

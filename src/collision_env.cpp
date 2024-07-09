@@ -43,7 +43,7 @@ bool collisionRecurse(typename CollisionEnv<S>::AABBNode* root,  CollisionObject
         return true;
     }
 
-    if(!root->bv.overlap(query.aabb)) return false;
+    if(!root->bv.overlap(query->getAABB())) return false;
     
     if(collisionRecurse(root->children[0], query, cdata))
         return true;
@@ -65,3 +65,5 @@ template <typename S>
 size_t CollisionEnv<S>::size() const{
     return dtree.size();
 }
+
+template class CollisionEnv<double>;
