@@ -32,23 +32,26 @@ set(SOURCES
 set(CMAKE_C_COMPILER_LAUNCHER ccache)
 set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
 
-
 # 生成主程序可执行文件
 add_executable(cdu_cimpl ${SOURCES})
 
 # 链接Eigen库
 target_link_libraries(cdu_cimpl Eigen3::Eigen)
 
-# 测试文件源文件
-set(TEST_SOURCES
-    test/test_build_env.cpp
-    src/aabb.cpp
-    src/bvh_node_base.cpp
-    src/bvh_tree.cpp
-    src/collision_env.cpp
-    src/collision_object.cpp
-)
+# 定义一个函数来简化添加测试可执行文件的过程
+function(add_test_executable test_name)
+    set(TEST_SOURCES
+        test/${test_name}.cpp
+        src/aabb.cpp
+        src/bvh_node_base.cpp
+        src/bvh_tree.cpp
+        src/collision_env.cpp
+        src/collision_object.cpp
+    )
+    add_executable(${test_name} ${TEST_SOURCES})
+    target_link_libraries(${test_name} Eigen3::Eigen)
+endfunction()
 
 # 添加测试可执行文件
-add_executable(test_build_env ${TEST_SOURCES})
-target_link_libraries(test_build_env Eigen3::Eigen)
+add_test_executable(test_build_env)
+add_test_executable(test_random_env)

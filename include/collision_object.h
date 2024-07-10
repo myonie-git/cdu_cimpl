@@ -11,6 +11,8 @@
 #include <fstream>
 #include <sstream>
 
+#include <random>
+
 #include "aabb.h"
 
 
@@ -48,6 +50,28 @@ public:
     AABB<S> aabb;
 };
 
+template <typename S>
+std::vector<CollisionObject<S>*> randomCollisionObjects(int num_obj){
+
+    std::vector<CollisionObject<S>*> collision_objects;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis_size(0.0, 0.3);
+    std::uniform_real_distribution<> dis_size_z(0.0, 0.5);
+    std::uniform_real_distribution<> dis_pos(-1.0, 1.0);
+
+    for(int i = 0; i < num_obj; i++){
+        Vector3<S> size(dis_size(gen), dis_size(gen), dis_size(gen));
+        Vector3<S> position(dis_pos(gen), dis_pos(gen), dis_pos(gen));
+        Vector3<S> min = position - size / 2;
+        Vector3<S> max = position + size / 2;
+        AABB<S> aabb(min, max);
+        collision_objects.push_back(new CollisionObject<S>(aabb)); 
+    }
+
+    return collision_objects;
+}
 
 
 // 读取盒子数据的函数
