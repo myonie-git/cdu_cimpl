@@ -32,14 +32,12 @@ public:
     size_t n_leaves;
     NodeType* root_node;
 
-private:
-    
     void recurseDeleteNode(NodeType* Node);
     void deleteNode(NodeType* node);
 
     typedef typename std::vector<NodeType*>::iterator NodeVecIterator;
     NodeType* topdown(const NodeVecIterator lbeg, const NodeVecIterator lend);
-
+    void bottomup(const NodeVecIterator lbeg, const NodeVecIterator lend);
     
 };
 

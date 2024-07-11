@@ -50,6 +50,8 @@ public:
     /// @brief Depth of the AABB
     S depth() const;
 
+    S size() const;
+
     /// @brief Center of the AABB
     Vector3<S> center() const;
         

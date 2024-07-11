@@ -67,6 +67,14 @@ S AABB<S>::depth() const
 
 //==============================================================================
 template <typename S>
+S AABB<S>::size() const
+{
+  return (max_ - min_).squaredNorm();
+}
+
+
+//==============================================================================
+template <typename S>
 Vector3<S> AABB<S>::center() const
 {
   return (min_ + max_) * 0.5;

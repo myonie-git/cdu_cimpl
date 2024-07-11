@@ -4,7 +4,7 @@ template<typename BV>
 BvhTree<BV>::BvhTree(){
     root_node = nullptr;
     n_leaves = 0;
-    bu_threshold = 1;
+    bu_threshold = 2;
 }
 
 template<typename BV>
@@ -95,12 +95,51 @@ typename BvhTree<BV>::NodeType* BvhTree<BV>::topdown(const NodeVecIterator lbeg,
             return node;
         }
         else{
-            assert(0);
+            bottomup(lbeg, lend);
             return *lbeg;
         }
     }
     return *lbeg;
 }
+
+
+template<typename BV>
+void BvhTree<BV>::bottomup(const NodeVecIterator lbeg, const NodeVecIterator lend)
+{
+
+  NodeVecIterator lcur_end = lend;
+  while(lbeg < lcur_end - 1)
+  {
+    NodeVecIterator min_it1, min_it2;
+    S min_size = std::numeric_limits<S>::max();
+    for(NodeVecIterator it1 = lbeg; it1 < lcur_end; ++it1)
+    {
+      for(NodeVecIterator it2 = it1 + 1; it2 < lcur_end; ++it2)
+      {
+        S cur_size = ((*it1)->bv + (*it2)->bv).size();
+        if(cur_size < min_size)
+        {
+          min_size = cur_size;
+          min_it1 = it1;
+          min_it2 = it2;
+        }
+      }
+    }
+
+    NodeType* n[2] = {*min_it1, *min_it2};
+    NodeType* p = createNode(nullptr, n[0]->bv + n[1]->bv, nullptr);
+    p->children[0] = n[0];
+    p->children[1] = n[1];
+    n[0]->parent = p;
+    n[1]->parent = p;
+    *min_it1 = p;
+    NodeType* tmp = *min_it2;
+    lcur_end--;
+    *min_it2 = *lcur_end;
+    *lcur_end = tmp;
+  }
+}
+
 
 template<typename BV>
 typename BvhTree<BV>::NodeType* BvhTree<BV>::createNode(NodeType* parent, const BV& bv, void* data){
