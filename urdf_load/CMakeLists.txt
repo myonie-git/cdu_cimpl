@@ -7,7 +7,7 @@ include_directories(${EIGEN3_INCLUDE_DIR})
 
 set(CMAKE_BUILD_TYPE "Debug")
 
-# 手动指定TinyXML2的位置
+# # 手动指定TinyXML2的位置
 set(TINYXML2_INCLUDE_DIR /usr/include/tinyxml2)
 set(TINYXML2_LIBRARIES /usr/lib/x86_64-linux-gnu/libtinyxml2.so)
 
