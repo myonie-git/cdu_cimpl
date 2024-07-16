@@ -568,7 +568,7 @@ int main() {
         {"prbt_joint_6", 0.0}
     };
 
-    // 计算世界坐标，假设根链接名称为"prbt_base_link"（请根据您的URDF文件修改）
+    // 计算世界坐标，假设根链接名称为"prbt_base_link"
     computeWorldCoordinates("prbt_base_link", links, joints, jointAngles, Eigen::Vector3d(0, 0, 0), Eigen::Quaterniond(1, 0, 0, 0), worldLinks);
 
     // 打印计算的世界坐标
