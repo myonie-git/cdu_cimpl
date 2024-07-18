@@ -7,6 +7,14 @@ project(CDU_CIMPL)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_BUILD_TYPE "Debug")
+
+# 手动指定TinyXML2的位置
+set(TINYXML2_INCLUDE_DIR /usr/include/tinyxml2)
+set(TINYXML2_LIBRARIES /usr/lib/x86_64-linux-gnu/libtinyxml2.so)
+
+include_directories(${TINYXML2_INCLUDE_DIR})
+
 # 包含目录
 include_directories(include)
 
@@ -26,6 +34,7 @@ set(SOURCES
     src/bvh_tree.cpp
     src/collision_env.cpp
     src/collision_object.cpp
+    src/urdf_model.cpp
     src/main.cpp
 )
 
@@ -35,8 +44,8 @@ set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
 # 生成主程序可执行文件
 add_executable(cdu_cimpl ${SOURCES})
 
-# 链接Eigen库
-target_link_libraries(cdu_cimpl Eigen3::Eigen)
+# 链接Eigen库和tinyxml2库
+target_link_libraries(cdu_cimpl Eigen3::Eigen ${TINYXML2_LIBRARIES})
 
 # 定义一个函数来简化添加测试可执行文件的过程
 function(add_test_executable test_name)
@@ -47,11 +56,13 @@ function(add_test_executable test_name)
         src/bvh_tree.cpp
         src/collision_env.cpp
         src/collision_object.cpp
+        src/urdf_model.cpp
     )
     add_executable(${test_name} ${TEST_SOURCES})
-    target_link_libraries(${test_name} Eigen3::Eigen)
+    target_link_libraries(${test_name} Eigen3::Eigen ${TINYXML2_LIBRARIES})
 endfunction()
 
 # 添加测试可执行文件
 add_test_executable(test_build_env)
 add_test_executable(test_random_env)
+add_test_executable(test_urdf_model)
