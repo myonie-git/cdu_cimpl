@@ -366,6 +366,7 @@
 //     }
 //     return 0;
 // }
+
 #include <iostream>
 #include <tinyxml2.h>
 #include <vector>
@@ -562,9 +563,9 @@ int main() {
     std::map<std::string, double> jointAngles = {
         {"prbt_joint_1", 0.0},
         {"prbt_joint_2", 0.0},
-        {"prbt_joint_3", 2.0},
-        {"prbt_joint_4", 3.0},
-        {"prbt_joint_5", 1.0},
+        {"prbt_joint_3", 0.0},
+        {"prbt_joint_4", 0.0},
+        {"prbt_joint_5", 0.0},
         {"prbt_joint_6", 0.0}
     };
 
