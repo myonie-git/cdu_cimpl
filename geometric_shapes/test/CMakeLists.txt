@@ -51,6 +51,9 @@ target_link_libraries(test_ray_intersection ${PROJECT_NAME} ${Boost_LIBRARIES} $
 add_executable(test_body_operations test_body_operations.cpp)
 target_link_libraries(test_body_operations ${PROJECT_NAME} ${Boost_LIBRARIES} ${GTEST_LIBRARIES} pthread)
 
+add_executable(test_meshes_obb test_meshes_obb.cpp)
+target_link_libraries(test_meshes_obb ${PROJECT_NAME} ${Boost_LIBRARIES} ${GTEST_LIBRARIES} pthread)
+
 add_test(NAME test_basics COMMAND test_basics)
 add_test(NAME test_point_inclusion COMMAND test_point_inclusion)
 add_test(NAME test_bounding_sphere COMMAND test_bounding_sphere)
@@ -64,3 +67,4 @@ add_test(NAME test_loaded_meshes_mine COMMAND test_loaded_meshes_mine)
 add_test(NAME test_shapes COMMAND test_shapes)
 add_test(NAME test_ray_intersection COMMAND test_ray_intersection)
 add_test(NAME test_body_operations COMMAND test_body_operations)
+add_test(NAME test_meshes_obb COMMAND test_meshes_obb)
