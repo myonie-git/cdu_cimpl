@@ -1,6 +1,5 @@
 #include "urdf_model.h"
 
-
 using namespace tinyxml2;
 
 bool URDFModel::loadURDF(const std::string& filePath) {
@@ -29,8 +28,8 @@ void URDFModel::printModel() const {
 
 void URDFModel::printCollisionCoordinates() const {
     for (const auto& [name, link] : worldLinks) {
-        for (size_t i = 0; i < link.collisionPositions.size(); ++i) {
-            Eigen::Vector3d worldCollisionPos = link.position + link.rotation * link.collisionPositions[i];
+        for (const auto& collision : link.collisions) {
+            Eigen::Vector3d worldCollisionPos = link.position + link.rotation * collision.collisionPositions;
             std::cout << "Link: " << name << ", Collision Position: (" << worldCollisionPos.x() << ", " << worldCollisionPos.y() << ", " << worldCollisionPos.z() << ")" << std::endl;
         }
     }
@@ -59,15 +58,13 @@ void URDFModel::parseURDF(const std::string& filePath) {
 
             for (XMLElement* collision = link->FirstChildElement("collision"); collision; collision = collision->NextSiblingElement("collision")) {
                 XMLElement* origin = collision->FirstChildElement("origin");
-                if (origin) {
-                    Eigen::Vector3d collPos;
-                    Eigen::Quaterniond collRot;
+                Eigen::Vector3d collPos = Eigen::Vector3d(0, 0, 0);
+                Eigen::Quaterniond collRot = Eigen::Quaterniond(1, 0, 0, 0);
 
+                if (origin) {
                     const char* xyz = origin->Attribute("xyz");
                     if (xyz) {
                         sscanf(xyz, "%lf %lf %lf", &collPos.x(), &collPos.y(), &collPos.z());
-                    } else {
-                        collPos = Eigen::Vector3d(0, 0, 0);
                     }
 
                     const char* rpy = origin->Attribute("rpy");
@@ -78,12 +75,83 @@ void URDFModel::parseURDF(const std::string& filePath) {
                         Eigen::AngleAxisd pitchAngle(pitch, Eigen::Vector3d::UnitY());
                         Eigen::AngleAxisd yawAngle(yaw, Eigen::Vector3d::UnitZ());
                         collRot = yawAngle * pitchAngle * rollAngle;
-                    } else {
-                        collRot = Eigen::Quaterniond(1, 0, 0, 0);
-                    }
+                    } 
 
-                    l.collisionPositions.push_back(collPos);
-                    l.collisionRotations.push_back(collRot);
+                    XMLElement* geometry = collision->FirstChildElement("geometry");
+                    if(geometry){
+                        std::shared_ptr<bodies::Body> body;
+                        CollisionGeom collisionGeom;
+                        collisionGeom.collisionPositions = collPos;
+                        collisionGeom.collisionRotations = collRot;
+
+                        XMLElement* box = geometry->FirstChildElement("box");
+                        if(box){
+                            const char* size = box->Attribute("size");
+                            if(size){
+                                Eigen::Vector3d boxSize;
+                                sscanf(size, "%lf %lf %lf", &boxSize.x(), &boxSize.y(), &boxSize.z());
+                                shapes::Box shape(boxSize.x(), boxSize.y(), boxSize.z());
+                                body = std::make_shared<bodies::Box>(&shape);
+                                body->setPose(Eigen::Isometry3d(Eigen::Translation3d(collPos) * collRot));
+                                collisionGeom.type = CollisionGeom::BOX;
+                                collisionGeom.body = body;
+                                l.collisions.push_back(collisionGeom);
+                            }
+                        }
+                        
+                            
+                        XMLElement* sphere = geometry->FirstChildElement("sphere");
+                        if (sphere) {
+                            const char* radius = sphere->Attribute("radius");
+                            if (radius) {
+                                double sphereRadius;
+                                sscanf(radius, "%lf", &sphereRadius);
+                                shapes::Sphere shape(sphereRadius);
+                                body = std::make_shared<bodies::Sphere>(&shape);
+                                body->setPose(Eigen::Isometry3d(Eigen::Translation3d(collPos) * collRot));
+                                collisionGeom.type = CollisionGeom::SPHERE;
+                                collisionGeom.body = body;
+                                l.collisions.push_back(collisionGeom);
+                            }
+                        }
+
+                        XMLElement* cylinder = geometry->FirstChildElement("cylinder");
+                        if (cylinder) {
+                            const char* radius = cylinder->Attribute("radius");
+                            const char* length = cylinder->Attribute("length");
+                            if (radius && length) {
+                                double cylinderRadius, cylinderLength;
+                                sscanf(radius, "%lf", &cylinderRadius);
+                                sscanf(length, "%lf", &cylinderLength);
+                                shapes::Cylinder shape(cylinderRadius, cylinderLength);
+                                body = std::make_shared<bodies::Cylinder>(&shape);
+                                body->setPose(Eigen::Isometry3d(Eigen::Translation3d(collPos) * collRot));
+                                collisionGeom.type = CollisionGeom::CYLINDER;
+                                collisionGeom.body = body;
+                                l.collisions.push_back(collisionGeom);
+                            }
+                        }
+
+                        XMLElement* mesh = geometry->FirstChildElement("mesh");
+                        if (mesh) {
+                            const char* filename = mesh->Attribute("filename");
+                            const char* scale = mesh->Attribute("scale");
+                            Eigen::Vector3d meshScale(1, 1, 1);
+                            if (scale) {
+                                sscanf(scale, "%lf %lf %lf", &meshScale.x(), &meshScale.y(), &meshScale.z());
+                            }
+                            if (filename) {
+                                shapes::Mesh* shape = shapes::createMeshFromResource(filename, meshScale);
+                                if (shape) {
+                                    body = std::make_shared<bodies::ConvexMesh>(shape);
+                                    body->setPose(Eigen::Isometry3d(Eigen::Translation3d(collPos) * collRot));
+                                    collisionGeom.type = CollisionGeom::MESH;
+                                    collisionGeom.body = body;
+                                    l.collisions.push_back(collisionGeom);
+                                }
+                            }
+                        }    
+                    }
                 }
             }
 

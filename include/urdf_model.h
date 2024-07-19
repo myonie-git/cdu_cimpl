@@ -8,14 +8,25 @@
 #include <map>
 #include <Eigen/Dense>
 
+#include <geometric_shapes/bodies.h>
+#include <geometric_shapes/shape_operations.h>
+#include <geometric_shapes/body_operations.h>
+
 using namespace tinyxml2;
+
+struct CollisionGeom {
+    enum ShapeType { BOX, SPHERE, CYLINDER, MESH };
+    ShapeType type;
+    Eigen::Vector3d collisionPositions;
+    Eigen::Quaterniond collisionRotations;
+    std::shared_ptr<bodies::Body> body;
+};
 
 struct Link {
     std::string name;
     Eigen::Vector3d position;
     Eigen::Quaterniond rotation;
-    std::vector<Eigen::Vector3d> collisionPositions;
-    std::vector<Eigen::Quaterniond> collisionRotations;
+    std::vector<CollisionGeom> collisions;
 };
 
 struct Joint {
@@ -45,6 +56,7 @@ public:
     void calculateWorldCoordinates();
     void printModel() const;
     void printCollisionCoordinates() const;
+    
 };
 
 #endif
