@@ -2,7 +2,7 @@
 
 int main() {
     URDFModel model;
-    std::string urdfFilePath = "/data/ros/cdu_cimpl/urdf_load/prbt_description.urdf"; // Replace with your URDF file path
+    std::string urdfFilePath = "/data/ros/cdu_cimpl/prbt_description.urdf"; // Replace with your URDF file path
 
     if (model.loadURDF(urdfFilePath)) {
         std::cout << "Successfully loaded URDF file: " << urdfFilePath << std::endl;
