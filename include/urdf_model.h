@@ -56,7 +56,10 @@ public:
     void calculateWorldCoordinates();
     void printModel() const;
     void printCollisionCoordinates() const;
-    
+
+    void computeAABB();
+    void computeOBB();
+
 };
 
 #endif

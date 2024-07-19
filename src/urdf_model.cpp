@@ -242,3 +242,11 @@ void URDFModel::computeWorldCoordinates(const std::string& linkName, const Eigen
         }
     }
 }
+
+void URDFModel::computeAABB(){
+
+}
+
+void URDFModel::computeOBB(){
+    
+}
