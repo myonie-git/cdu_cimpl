@@ -1,4 +1,6 @@
 #include "obb.h"
+#include "aabb.h"
+#include "types.h"
 
 extern template
 class OBB<double>;
@@ -168,7 +170,7 @@ OBB<S> merge_largedist(const OBB<S>& b1, const OBB<S>& b2)
     vertex_proj[i].noalias() -= b.axis.col(0) * vertex[i].dot(b.axis.col(0));
   }
 
-  getCovariance<S>(vertex_proj, nullptr, nullptr, nullptr, 16, M);
+  fcl::getCovariance<S>(vertex_proj, nullptr, nullptr, nullptr, 16, M);
   eigen_old(M, s, E);
 
   int min, mid, max;
@@ -202,7 +204,7 @@ OBB<S> merge_largedist(const OBB<S>& b1, const OBB<S>& b2)
   b.axis.col(2) << E.col(0)[mid], E.col(1)[mid], E.col(2)[mid];
 
   // set obb centers and extensions
-  getExtentAndCenter<S>(
+  fcl::getExtentAndCenter<S>(
         vertex, nullptr, nullptr, nullptr, 16, b.axis, b.To, b.extent);
 
   return b;

@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "aabb.h"
+#include "types.h"
 #include "bvh_node_base.h"
 
 template <typename BV>

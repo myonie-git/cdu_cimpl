@@ -102,6 +102,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 # 源文件
 set(SOURCES
     src/aabb.cpp
+    src/obb.cpp
     src/bvh_node_base.cpp
     src/bvh_tree.cpp
     src/collision_env.cpp
@@ -124,6 +125,7 @@ function(add_test_executable test_name)
     set(TEST_SOURCES
         test/${test_name}.cpp
         src/aabb.cpp
+        src/obb.cpp
         src/bvh_node_base.cpp
         src/bvh_tree.cpp
         src/collision_env.cpp

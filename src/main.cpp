@@ -2,6 +2,7 @@
 
 #include "collision_object.h"
 #include "aabb.h"
+#include "types.h"
 #include "collision_env.h"
 #include <iostream>
 

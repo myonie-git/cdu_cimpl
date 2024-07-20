@@ -1,5 +1,6 @@
 #include "bvh_node_base.h"
 #include "aabb.h"
+#include "types.h"
 
 // 构造函数定义
 template<typename BV>

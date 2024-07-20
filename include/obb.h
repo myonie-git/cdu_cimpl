@@ -5,7 +5,10 @@
 #include <Eigen/Geometry>
 #include <limits>
  
-#include "aabb.h"
+#include "fcl/common/types.h"
+#include "fcl/math/geometry.h"
+
+#include "types.h"
 
 template <typename S_>
 class OBB
@@ -24,9 +27,9 @@ public:
 
     }
 
-    OBB(const Matrix3<S>& axis,
-        const Vector3<S>& center,
-        const Vector3<S>& extent)
+    OBB(const Matrix3<S>& axis_,
+        const Vector3<S>& center_,
+        const Vector3<S>& extent_)
         : axis(axis_), To(center_), extent(extent_){
 
         }
@@ -38,6 +41,9 @@ public:
     OBB<S>& operator += (const OBB<S>& other);
 
     OBB<S> operator + (const OBB<S>& other) const;
+        
+    /// @brief Check whether the OBB contains a point.
+    bool contain(const Vector3<S>& p) const;
 
     S width() const;
 

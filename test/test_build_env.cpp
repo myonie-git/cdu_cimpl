@@ -6,6 +6,7 @@
 #include <collision_object.h>
 #include <collision_env.h>
 #include "aabb.h"
+#include "types.h"
 
 int main(){
 

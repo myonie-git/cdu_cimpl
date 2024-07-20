@@ -13,6 +13,7 @@
 
 #include <random>
 
+#include "types.h"
 #include "aabb.h"
 
 
@@ -48,6 +49,7 @@ public:
 
     //the value of collision obj
     AABB<S> aabb;
+
 };
 
 template <typename S>

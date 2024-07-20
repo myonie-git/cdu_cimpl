@@ -3,6 +3,8 @@
 #include "collision_object.h"
 #include "aabb.h"
 #include <iostream>
+#include "types.h"
+
 
 template <typename S>
 void CollisionObject<S>::computeAABB(){
