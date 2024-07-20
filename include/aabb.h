@@ -11,6 +11,9 @@
 template <typename S>
 using Vector3 = Eigen::Matrix<S, 3, 1>;
 
+template <typename S>
+using Matrix3 = Eigen::Matrix<S, 3, 3>;
+
 template <typename S_>
 class AABB
 {
