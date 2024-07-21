@@ -211,6 +211,10 @@ void URDFModel::parseURDF(const std::string& filePath) {
             joints.push_back(j);
         }
     }
+
+    computeAABB();
+    computeOBB();
+
 }
 
 void URDFModel::computeWorldCoordinates(const std::string& linkName, const Eigen::Vector3d& parentPos, const Eigen::Quaterniond& parentRot) {
@@ -244,9 +248,54 @@ void URDFModel::computeWorldCoordinates(const std::string& linkName, const Eigen
 }
 
 void URDFModel::computeAABB(){
-
+        for(auto& linkPair : links){
+        Link& link = linkPair.second;
+        for (auto& collision : link.collisions) {
+            configureCollisionAABB(collision);
+        }
+    }
 }
 
 void URDFModel::computeOBB(){
-    
+    for(auto& linkPair : links){
+        Link& link = linkPair.second;
+        for (auto& collision : link.collisions) {
+            configureCollisionOBB(collision);
+        }
+    }
+}
+
+void URDFModel::configureCollisionOBB(CollisionGeom& collision){
+    if(!collision.body){
+        std::cerr << "Error: Collision body is not set." << std::endl;
+        return;      
+    }
+
+    bodies::OBB obb;
+    collision.body->computeBoundingBox(obb);
+
+    collision.obb.extent = obb.getExtents();
+
+    Eigen::Isometry3d obbPose = obb.getPose();
+    collision.obb.axis = obbPose.rotation();
+    collision.obb.To = obbPose.translation();
+
+    return;
+}
+
+void URDFModel::configureCollisionAABB(CollisionGeom& collision){
+    if(!collision.body){
+        std::cerr << "Error: Collision body is not set." << std::endl;
+        return;      
+    }
+
+    bodies::AABB aabb;
+    collision.body->computeBoundingBox(aabb);
+
+
+    collision.aabb.min_ = aabb.min();
+    collision.aabb.max_ = aabb.max();
+
+    return; 
+
 }

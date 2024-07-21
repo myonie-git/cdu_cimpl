@@ -12,6 +12,9 @@
 #include <geometric_shapes/shape_operations.h>
 #include <geometric_shapes/body_operations.h>
 
+#include "aabb.h"
+#include "obb.h"
+
 using namespace tinyxml2;
 
 struct CollisionGeom {
@@ -20,6 +23,8 @@ struct CollisionGeom {
     Eigen::Vector3d collisionPositions;
     Eigen::Quaterniond collisionRotations;
     std::shared_ptr<bodies::Body> body;
+    AABB<double> aabb;
+    OBB<double> obb;
 };
 
 struct Link {
@@ -59,6 +64,9 @@ public:
 
     void computeAABB();
     void computeOBB();
+
+    void configureCollisionOBB(CollisionGeom& collision);
+    void configureCollisionAABB(CollisionGeom& collision);
 
 };
 
