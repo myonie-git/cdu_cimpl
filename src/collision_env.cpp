@@ -40,13 +40,14 @@ template <typename S>
 bool collisionRecurse(typename CollisionEnv<S>::AABBNode* root,  CollisionObject<S>* query, void* cdata){
     if(root->isLeaf()){
         if(!root->bv.overlap(query->getAABB())) return false;
-        return true;
+
+        return true; //TODO 验证两个OBB是否会发生碰撞
     }
 
     if(!root->bv.overlap(query->getAABB())) return false;
     
     if(collisionRecurse(root->children[0], query, cdata))
-        return true;
+        return true; 
 
     if(collisionRecurse(root->children[1], query, cdata))
         return true;
@@ -56,9 +57,9 @@ bool collisionRecurse(typename CollisionEnv<S>::AABBNode* root,  CollisionObject
 }
 
 template <typename S>
-void CollisionEnv<S>::collide(CollisionObject<S>* obj, void* cdata) const{
-    if(dtree.size() == 0) return;
-    collisionRecurse(dtree.getRoot(), obj, cdata);
+bool CollisionEnv<S>::collide(CollisionObject<S>* obj, void* cdata) const{
+    if(dtree.size() == 0) return false;
+    return collisionRecurse(dtree.getRoot(), obj, cdata);
 }
 
 template <typename S>

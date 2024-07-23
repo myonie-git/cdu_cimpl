@@ -29,7 +29,7 @@ void URDFModel::printModel() const {
 void URDFModel::printCollisionCoordinates() const {
     for (const auto& [name, link] : worldLinks) {
         for (const auto& collision : link.collisions) {
-            Eigen::Vector3d worldCollisionPos = link.position + link.rotation * collision.collisionPositions;
+            Eigen::Vector3d worldCollisionPos = link.position + link.rotation * collision->collisionPositions;
             std::cout << "Link: " << name << ", Collision Position: (" << worldCollisionPos.x() << ", " << worldCollisionPos.y() << ", " << worldCollisionPos.z() << ")" << std::endl;
         }
     }
@@ -80,9 +80,9 @@ void URDFModel::parseURDF(const std::string& filePath) {
                     XMLElement* geometry = collision->FirstChildElement("geometry");
                     if(geometry){
                         std::shared_ptr<bodies::Body> body;
-                        CollisionGeom collisionGeom;
-                        collisionGeom.collisionPositions = collPos;
-                        collisionGeom.collisionRotations = collRot;
+                        auto collisionGeom = std::make_shared<CollisionGeom>();
+                        collisionGeom->collisionPositions = collPos;
+                        collisionGeom->collisionRotations = collRot;
 
                         XMLElement* box = geometry->FirstChildElement("box");
                         if(box){
@@ -93,9 +93,10 @@ void URDFModel::parseURDF(const std::string& filePath) {
                                 shapes::Box shape(boxSize.x(), boxSize.y(), boxSize.z());
                                 body = std::make_shared<bodies::Box>(&shape);
                                 body->setPose(Eigen::Isometry3d(Eigen::Translation3d(collPos) * collRot));
-                                collisionGeom.type = CollisionGeom::BOX;
-                                collisionGeom.body = body;
+                                collisionGeom->type = CollisionGeom::BOX;
+                                collisionGeom->body = body;
                                 l.collisions.push_back(collisionGeom);
+                                collisionGeometries.push_back(collisionGeom);
                             }
                         }
                         
@@ -109,9 +110,10 @@ void URDFModel::parseURDF(const std::string& filePath) {
                                 shapes::Sphere shape(sphereRadius);
                                 body = std::make_shared<bodies::Sphere>(&shape);
                                 body->setPose(Eigen::Isometry3d(Eigen::Translation3d(collPos) * collRot));
-                                collisionGeom.type = CollisionGeom::SPHERE;
-                                collisionGeom.body = body;
+                                collisionGeom->type = CollisionGeom::SPHERE;
+                                collisionGeom->body = body;
                                 l.collisions.push_back(collisionGeom);
+                                collisionGeometries.push_back(collisionGeom);
                             }
                         }
 
@@ -126,9 +128,10 @@ void URDFModel::parseURDF(const std::string& filePath) {
                                 shapes::Cylinder shape(cylinderRadius, cylinderLength);
                                 body = std::make_shared<bodies::Cylinder>(&shape);
                                 body->setPose(Eigen::Isometry3d(Eigen::Translation3d(collPos) * collRot));
-                                collisionGeom.type = CollisionGeom::CYLINDER;
-                                collisionGeom.body = body;
+                                collisionGeom->type = CollisionGeom::CYLINDER;
+                                collisionGeom->body = body;
                                 l.collisions.push_back(collisionGeom);
+                                collisionGeometries.push_back(collisionGeom);
                             }
                         }
 
@@ -145,9 +148,10 @@ void URDFModel::parseURDF(const std::string& filePath) {
                                 if (shape) {
                                     body = std::make_shared<bodies::ConvexMesh>(shape);
                                     body->setPose(Eigen::Isometry3d(Eigen::Translation3d(collPos) * collRot));
-                                    collisionGeom.type = CollisionGeom::MESH;
-                                    collisionGeom.body = body;
+                                    collisionGeom->type = CollisionGeom::MESH;
+                                    collisionGeom->body = body;
                                     l.collisions.push_back(collisionGeom);
+                                    collisionGeometries.push_back(collisionGeom);
                                 }
                             }
                         }    
@@ -248,54 +252,54 @@ void URDFModel::computeWorldCoordinates(const std::string& linkName, const Eigen
 }
 
 void URDFModel::computeAABB(){
-        for(auto& linkPair : links){
-        Link& link = linkPair.second;
-        for (auto& collision : link.collisions) {
-            configureCollisionAABB(collision);
-        }
+    for(auto& collisionGeom : collisionGeometries){
+        configureCollisionAABB(collisionGeom);
     }
 }
 
 void URDFModel::computeOBB(){
-    for(auto& linkPair : links){
-        Link& link = linkPair.second;
-        for (auto& collision : link.collisions) {
-            configureCollisionOBB(collision);
-        }
+    for(auto& collisionGeom : collisionGeometries){
+        configureCollisionOBB(collisionGeom);
     }
 }
 
-void URDFModel::configureCollisionOBB(CollisionGeom& collision){
-    if(!collision.body){
+void URDFModel::configureCollisionOBB(std::shared_ptr<CollisionGeom>& collision){
+    if(!collision->body){
         std::cerr << "Error: Collision body is not set." << std::endl;
         return;      
     }
 
     bodies::OBB obb;
-    collision.body->computeBoundingBox(obb);
+    collision->body->computeBoundingBox(obb);
 
-    collision.obb.extent = obb.getExtents();
+    collision->obb.extent = obb.getExtents();
 
     Eigen::Isometry3d obbPose = obb.getPose();
-    collision.obb.axis = obbPose.rotation();
-    collision.obb.To = obbPose.translation();
+    collision->obb.axis = obbPose.rotation();
+    collision->obb.To = obbPose.translation();
 
     return;
 }
 
-void URDFModel::configureCollisionAABB(CollisionGeom& collision){
-    if(!collision.body){
+void URDFModel::configureCollisionAABB(std::shared_ptr<CollisionGeom>& collision){
+    if(!collision->body){
         std::cerr << "Error: Collision body is not set." << std::endl;
         return;      
     }
 
     bodies::AABB aabb;
-    collision.body->computeBoundingBox(aabb);
+    collision->body->computeBoundingBox(aabb);
 
-
-    collision.aabb.min_ = aabb.min();
-    collision.aabb.max_ = aabb.max();
+    collision->aabb.min_ = aabb.min();
+    collision->aabb.max_ = aabb.max();
 
     return; 
+}
 
+void URDFModel::configureCollisionAABBRadius(std::shared_ptr<CollisionGeom>& collision){
+    if(!collision->body){
+        std::cerr << "Error: Collision body is not set." << std::endl;
+        return;      
+    }
+    collision->aabb_radius = (collision->aabb.max_ - collision->aabb.min_).norm() / 2.0;
 }

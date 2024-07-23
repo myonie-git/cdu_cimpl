@@ -7,7 +7,7 @@
 
 
 template <typename S>
-void CollisionObject<S>::computeAABB(){
+void CollisionObject<S>::computeCollisionAABB(){
     //计算变化后的中心点
     Vector3<S> center = t * aabb_center;
 

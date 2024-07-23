@@ -15,6 +15,7 @@
 
 #include "types.h"
 #include "aabb.h"
+#include "obb.h"
 
 
 // CollisionObject 类定义
@@ -32,11 +33,15 @@ public:
     {
     }
 
-    AABB<S> getAABB() const{
+    AABB<S> getAABB(){
         return aabb;
     }
 
-    void computeAABB();
+    OBB<S> getOBB(){
+        return obb;
+    }
+
+    void computeCollisionAABB();
 
     //the position of the center of aabb
     Vector3<S> aabb_center;
@@ -50,6 +55,7 @@ public:
     //the value of collision obj
     AABB<S> aabb;
 
+    OBB<S> obb;
 };
 
 template <typename S>

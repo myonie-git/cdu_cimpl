@@ -11,7 +11,7 @@ public:
     {
         /// @brief for leaf node, children nodes
         NodeBase<BV>* children[2];
-        void* data;
+        void* data; //记录其AABB形状
     };
 
     bool isLeaf() const;

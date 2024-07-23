@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <memory>
 #include <Eigen/Dense>
 
 #include <geometric_shapes/bodies.h>
@@ -18,20 +19,24 @@
 using namespace tinyxml2;
 
 struct CollisionGeom {
+    
+    using S = double;
+
     enum ShapeType { BOX, SPHERE, CYLINDER, MESH };
     ShapeType type;
-    Eigen::Vector3d collisionPositions;
-    Eigen::Quaterniond collisionRotations;
+    Eigen::Vector3d collisionPositions; //用于表征真实向量
+    Eigen::Quaterniond collisionRotations; //用于表征现实中的旋转
     std::shared_ptr<bodies::Body> body;
-    AABB<double> aabb;
-    OBB<double> obb;
+    AABB<S> aabb;
+    OBB<S> obb;
+    S aabb_radius;
 };
 
 struct Link {
     std::string name;
     Eigen::Vector3d position;
     Eigen::Quaterniond rotation;
-    std::vector<CollisionGeom> collisions;
+    std::vector<std::shared_ptr<CollisionGeom>> collisions;
 };
 
 struct Joint {
@@ -52,6 +57,7 @@ public:
     std::vector<Joint> joints;
     std::map<std::string, double> jointAngles;
     std::map<std::string, Link> worldLinks;
+    std::vector<std::shared_ptr<CollisionGeom>> collisionGeometries;
 
     void parseURDF(const std::string& filePath);
     void computeWorldCoordinates(const std::string& linkName, const Eigen::Vector3d& parentPos, const Eigen::Quaterniond& parentRot);
@@ -65,8 +71,10 @@ public:
     void computeAABB();
     void computeOBB();
 
-    void configureCollisionOBB(CollisionGeom& collision);
-    void configureCollisionAABB(CollisionGeom& collision);
+    void configureCollisionOBB(std::shared_ptr<CollisionGeom>& collision);
+    void configureCollisionAABB(std::shared_ptr<CollisionGeom>& collision);
+
+    void configureCollisionAABBRadius(std::shared_ptr<CollisionGeom>& collision);
 
 };
 

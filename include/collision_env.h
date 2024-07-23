@@ -22,7 +22,7 @@ public:
     // void InitTree(std::vector<NodeType*>& leaves); //输入一系列的碰撞物,以建树
     void InitTree(const std::vector<CollisionObject<S>*>& other_objs);
     void clear();
-    void collide(CollisionObject<S>* obj, void* cdata) const;
+    bool collide(CollisionObject<S>* obj, void* cdata) const;
     size_t size() const;
 
     BvhTree<AABB<S>>dtree;
