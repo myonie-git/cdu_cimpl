@@ -30,7 +30,14 @@ void URDFModel::printCollisionCoordinates() const {
     for (const auto& [name, link] : worldLinks) {
         for (const auto& collision : link.collisions) {
             Eigen::Vector3d worldCollisionPos = link.position + link.rotation * collision->collisionPositions;
+            Eigen::Quaterniond worldCollisionRot = link.rotation * collision->collisionRotations;
+
             std::cout << "Link: " << name << ", Collision Position: (" << worldCollisionPos.x() << ", " << worldCollisionPos.y() << ", " << worldCollisionPos.z() << ")" << std::endl;
+
+             // 打印旋转矩阵
+            Eigen::Matrix3d rotationMatrix = worldCollisionRot.toRotationMatrix();
+            std::cout << "Collision Rotation Matrix: \n" << rotationMatrix << std::endl;
+
         }
     }
 }

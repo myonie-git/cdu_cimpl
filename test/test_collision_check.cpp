@@ -43,6 +43,8 @@ int main(){
     //创建一个由COLLISIONOBJECT组成的向量，表示机器人的碰撞物
     bool result = false;
     std::vector<CollisionObject<S>> collision_geometry_;
+    
+
     for(int i = 0; i < collision_geometry_.size() && !result; i++){
         result = env.collide(collision_geometry_[i].get(), nullptr);
     }

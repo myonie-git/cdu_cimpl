@@ -17,6 +17,7 @@
 #include "aabb.h"
 #include "obb.h"
 
+#include "urdf_model.h"
 
 // CollisionObject 类定义
 template <typename S>
@@ -33,6 +34,16 @@ public:
     {
     }
 
+    CollisionObject(const CollisionGeom& geom){
+
+        aabb.center = Vector3<S>(geom.aabb.center);
+        aabb.radius = geom.aabb_radius;
+
+        // t = transform;
+        // obb = geom.obb;
+        
+    }
+
     AABB<S> getAABB(){
         return aabb;
     }
@@ -42,6 +53,8 @@ public:
     }
 
     void computeCollisionAABB();
+
+    void computeCollisionOBB();
 
     //the position of the center of aabb
     Vector3<S> aabb_center;
@@ -76,6 +89,9 @@ std::vector<CollisionObject<S>*> randomCollisionObjects(int num_obj){
         Vector3<S> max = position + size / 2;
         AABB<S> aabb(min, max);
         collision_objects.push_back(new CollisionObject<S>(aabb)); 
+
+        //
+
     }
 
     return collision_objects;

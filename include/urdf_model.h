@@ -25,7 +25,7 @@ struct CollisionGeom {
     enum ShapeType { BOX, SPHERE, CYLINDER, MESH };
     ShapeType type;
     Eigen::Vector3d collisionPositions; //用于表征真实向量
-    Eigen::Quaterniond collisionRotations; //用于表征现实中的旋转
+    Eigen::Quaterniond collisionRotations; //用于表征现实中的旋转,四元数
     std::shared_ptr<bodies::Body> body;
     AABB<S> aabb;
     OBB<S> obb;

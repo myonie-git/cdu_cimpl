@@ -16,3 +16,8 @@ void CollisionObject<S>::computeCollisionAABB(){
     aabb.min_ = center - delta;
     aabb.max_ = center + delta;
 }
+
+template <typename S>
+void CollisionObject<S>::computeCollisionOBB(){
+    
+}
