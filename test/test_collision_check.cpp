@@ -17,7 +17,7 @@ int main(){
 
     CollisionEnv<S> env;
     env.InitTree(collision_objects);
-    env.dtree.print();
+    // env.dtree.print();
     
     //read the robot model
     URDFModel model;
@@ -43,10 +43,18 @@ int main(){
     //创建一个由COLLISIONOBJECT组成的向量，表示机器人的碰撞物
     bool result = false;
     std::vector<CollisionObject<S>> collision_geometry_;
+
+    //TODO把Model转换成Collision_geometry
     
 
+    std::cout << model.getCollisionNum() << std::endl;
+    for (const auto& collisionGeomPtr : model.collisionGeometries) {
+        CollisionObject<S> collisionObject(*collisionGeomPtr);
+        collision_geometry_.push_back(std::move(collisionObject));
+    }
+
     for(int i = 0; i < collision_geometry_.size() && !result; i++){
-        result = env.collide(collision_geometry_[i].get(), nullptr);
+        result = env.collide(&collision_geometry_[i], nullptr);
     }
 
     return 0;

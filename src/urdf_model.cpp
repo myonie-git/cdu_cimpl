@@ -90,6 +90,7 @@ void URDFModel::parseURDF(const std::string& filePath) {
                         auto collisionGeom = std::make_shared<CollisionGeom>();
                         collisionGeom->collisionPositions = collPos;
                         collisionGeom->collisionRotations = collRot;
+                        collisionGeom->parentLink = &l; // 设置指向 Link 的指针
 
                         XMLElement* box = geometry->FirstChildElement("box");
                         if(box){
@@ -309,4 +310,8 @@ void URDFModel::configureCollisionAABBRadius(std::shared_ptr<CollisionGeom>& col
         return;      
     }
     collision->aabb_radius = (collision->aabb.max_ - collision->aabb.min_).norm() / 2.0;
+}
+
+int URDFModel::getCollisionNum(){
+    return collisionGeometries.size();
 }

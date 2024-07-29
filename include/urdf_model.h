@@ -18,6 +18,8 @@
 
 using namespace tinyxml2;
 
+struct Link; 
+
 struct CollisionGeom {
     
     using S = double;
@@ -30,6 +32,7 @@ struct CollisionGeom {
     AABB<S> aabb;
     OBB<S> obb;
     S aabb_radius;
+    Link* parentLink;
 };
 
 struct Link {
@@ -75,7 +78,8 @@ public:
     void configureCollisionAABB(std::shared_ptr<CollisionGeom>& collision);
 
     void configureCollisionAABBRadius(std::shared_ptr<CollisionGeom>& collision);
-
+    
+    int getCollisionNum();
 };
 
 #endif

@@ -28,20 +28,27 @@ public:
     CollisionObject(const Vector3<S>& center, S radius, const Eigen::Transform<S, 3, Eigen::Isometry>& transform)
         : aabb_center(center), aabb_radius(radius), t(transform)
     {
+        computeCollisionOBB();
     }
 
     CollisionObject(const AABB<S>& aabb_) : aabb(aabb_)
     {
+        computeCollisionOBB();
     }
 
-    CollisionObject(const CollisionGeom& geom){
+    CollisionObject(const CollisionGeom& geom)
+        : aabb_center(geom.aabb.center()), aabb_radius(geom.aabb_radius),
+          t(Eigen::Transform<S, 3, Eigen::Isometry>::Identity())
+    {
+        // 初始化 transform
+        t.translation() = geom.parentLink->position + geom.parentLink->rotation * geom.collisionPositions;
+        t.linear() = (geom.parentLink->rotation * geom.collisionRotations).toRotationMatrix();
 
-        aabb.center = Vector3<S>(geom.aabb.center);
-        aabb.radius = geom.aabb_radius;
+        obb = geom.obb;
 
-        // t = transform;
-        // obb = geom.obb;
-        
+        // 计算 AABB 和 OBB
+        computeCollisionAABB();
+        // computeCollisionOBB(); OBB暂时不需要计算
     }
 
     AABB<S> getAABB(){
