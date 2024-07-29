@@ -5,7 +5,10 @@
 #include <map>
 #include <iostream>
 
+
+#include "collision_object.h"
 #include "aabb.h"
+#include "obb.h"
 #include "types.h"
 #include "bvh_node_base.h"
 
@@ -21,7 +24,7 @@ public:
     void init(std::vector<NodeType*>& leaves); //初始化bvh树
     NodeType* getRoot() const;
     NodeType*& getRoot();
-    NodeType* createNode(NodeType* parent, const BV& bv, void* data);
+    NodeType* createNode(NodeType* parent, const BV& bv, CollisionObject<double>* data);
     void clear();
     size_t size() const;
     void print(NodeType* root, int depth);

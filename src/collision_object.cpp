@@ -4,6 +4,7 @@
 #include "aabb.h"
 #include <iostream>
 #include "types.h"
+#include "obb.h"
 
 template <typename S>
 void CollisionObject<S>::computeCollisionAABB(){

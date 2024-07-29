@@ -171,7 +171,7 @@ OBB<S> merge_largedist(const OBB<S>& b1, const OBB<S>& b2)
   }
 
   fcl::getCovariance<S>(vertex_proj, nullptr, nullptr, nullptr, 16, M);
-  eigen_old(M, s, E);
+  fcl::eigen_old(M, s, E);
 
   int min, mid, max;
   if (s[0] > s[1])
@@ -572,3 +572,15 @@ bool obbDisjoint(
 
   return false;
 }
+
+
+template class OBB<double>;
+template class OBB<float>;
+template bool obbDisjoint<double>(const Eigen::Matrix<double, 3, 3>&, const Eigen::Matrix<double, 3, 1>&, const Eigen::Matrix<double, 3, 1>&, const Eigen::Matrix<double, 3, 1>&);
+template bool obbDisjoint<float>(const Eigen::Matrix<float, 3, 3>&, const Eigen::Matrix<float, 3, 1>&, const Eigen::Matrix<float, 3, 1>&, const Eigen::Matrix<float, 3, 1>&);
+template OBB<double> merge_largedist<double>(const OBB<double>&, const OBB<double>&);
+template OBB<float> merge_largedist<float>(const OBB<float>&, const OBB<float>&);
+template OBB<double> merge_smalldist<double>(const OBB<double>&, const OBB<double>&);
+template OBB<float> merge_smalldist<float>(const OBB<float>&, const OBB<float>&);
+template void computeVertices<double>(const OBB<double>&, Eigen::Matrix<double, 3, 1> vertices[8]);
+template void computeVertices<float>(const OBB<float>&, Eigen::Matrix<float, 3, 1> vertices[8]);

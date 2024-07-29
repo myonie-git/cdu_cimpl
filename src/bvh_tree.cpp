@@ -142,7 +142,7 @@ void BvhTree<BV>::bottomup(const NodeVecIterator lbeg, const NodeVecIterator len
 
 
 template<typename BV>
-typename BvhTree<BV>::NodeType* BvhTree<BV>::createNode(NodeType* parent, const BV& bv, void* data){
+typename BvhTree<BV>::NodeType* BvhTree<BV>::createNode(NodeType* parent, const BV& bv, CollisionObject<double>* data){
     NodeType* node = new NodeType(); // 分配内存并初始化 node
     node->parent = parent;
     node->data = data;

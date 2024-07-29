@@ -1,4 +1,5 @@
 #include "collision_env.h"
+#include "collision_object.h"
 #include <vector>
 
 template <typename S>
@@ -40,7 +41,7 @@ template <typename S>
 bool collisionRecurse(typename CollisionEnv<S>::AABBNode* root,  CollisionObject<S>* query, void* cdata){
     if(root->isLeaf()){
         if(!root->bv.overlap(query->getAABB())) return false;
-
+        if(!root->data->obb.overlap(query->getOBB())) return false;
         return true; //TODO 验证两个OBB是否会发生碰撞
     }
 

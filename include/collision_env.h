@@ -2,6 +2,7 @@
 #define COLLISION_ENV_H
 
 #include "aabb.h"
+#include "obb.h"
 #include "types.h"
 #include "bvh_node_base.h"
 #include "collision_object.h"
